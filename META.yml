@@ -1,7 +1,7 @@
 ---
 # http://module-build.sourceforge.net/META-spec.html
 name:         Data-VString
-version:      0.000_001
+version:      0.000_002
 version_from: lib/Data/VString.pm
 author:
   - Adriano Ferreira <ferreira@cpan.org>

@@ -1,4 +1,4 @@
-Data-VString version 0.0.1
+Data-VString version 0.0.2
 ==========================
 
 Perl extension to handle v-strings (often used as version strings)
@@ -14,9 +14,15 @@ To install this module type the following:
 
 DEPENDENCIES
 
-This module recommends
+This module requires
 
-  Test::Pod
+  Test::More
+
+for the testing part and recommends
+
+  Test::Pod 1.18
+
+also for testing - the POD part.
 
 TO DO
 
