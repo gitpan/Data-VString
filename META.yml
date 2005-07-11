@@ -1,0 +1,16 @@
+---
+# http://module-build.sourceforge.net/META-spec.html
+name:         Data-VString
+version:      0.000_001
+version_from: lib/Data/VString.pm
+author:
+  - Adriano Ferreira <ferreira@cpan.org>
+license: perl
+requires: []
+
+recommends:
+    Test::Pod:                     1.18
+installdirs:  site
+
+distribution_type: module
+generated_by: ExtUtils::MakeMaker version 6.17

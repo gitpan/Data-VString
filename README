@@ -1,0 +1,33 @@
+Data-VString version 0.0.1
+==========================
+
+Perl extension to handle v-strings (often used as version strings)
+
+INSTALLATION
+
+To install this module type the following:
+
+   perl Makefile.PL
+   make
+   make test
+   make install
+
+DEPENDENCIES
+
+This module recommends
+
+  Test::Pod
+
+TO DO
+
+* improve input error diagnostics
+* deal with the issue with Unicode
+
+COPYRIGHT AND LICENCE
+
+Copyright (C) 2005 by Adriano R. Ferreira
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+
