@@ -1,5 +1,12 @@
 Revision history for Perl extension Data::VString.
 
+0.0.3  Tue Jul 11 2005
+        - confessed the Unicode bug 
+        - added dependencies on Test::More and Carp
+        - docs now mention the distribution 'version'
+          which is much more famous (even Damian used it)
+        - added new function 'vstring_cmp' and a test
+
 0.0.2  Tue Jul 11 2005
         - POD tweaks
 

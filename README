@@ -1,4 +1,4 @@
-Data-VString version 0.0.2
+Data-VString version 0.0.3
 ==========================
 
 Perl extension to handle v-strings (often used as version strings)
@@ -28,6 +28,7 @@ TO DO
 
 * improve input error diagnostics
 * deal with the issue with Unicode
+* make it work in 5.6 (maybe)
 
 COPYRIGHT AND LICENCE
 

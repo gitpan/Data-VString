@@ -11,11 +11,12 @@ our @EXPORT_OK = qw(
   parse_vstring 
   format_vstring
   vstring_satisfy
+  vstring_cmp
 );
 
-our $VERSION = '0.000_002'; # '0.0.2'
+our $VERSION = '0.000_003'; # '0.0.3'
 
-#use Carp qw(croak);
+use Carp qw(carp);
 
 #use encoding 'utf8';
 
@@ -25,13 +26,15 @@ Data::VString - Perl extension to handle v-strings (often used as version string
 
 =head1 SYNOPSIS
 
-  use Data::VString qw(parse_vstring format_vstring vstring_satisfy);
+  use Data::VString qw(parse_vstring format_vstring vstring_cmp vstring_satisfy);
 
   # going from '0.0.1' to "\x{0}\x{0}\x{1}" and back
   $i_vstring = parse_vstring($vstring);
   $vstring = format_vstring($i_vstring);
 
-  vstring_satisfy($vstring, $predicate)
+  print 'ok' if vstring_cmp($VERSION, '>=', '0.0.1');
+
+  my $bool = vstring_satisfy($vstring, $predicate)
 
 =head1 DESCRIPTION
 
@@ -119,9 +122,14 @@ For the reverse operation, see C<format_vstring>.
 
 =cut
 
+sub _is_vstring {
+  return shift =~ /^\d+([._]\d+)*$/;
+}
+
 sub parse_vstring {
   my $vs = shift;
-  return undef unless $vs =~ /^\d+([._]\d+)*$/;
+  return undef unless defined $vs && _is_vstring($vs);
+  #no warnings 'utf8'; # every 16-bit value is ok
   $vs =~ s/[._]?(\d+)/chr($1 & 0x0FFFF)/eg;
   return $vs
 }
@@ -139,6 +147,7 @@ operation of C<parse_vstring>.
 sub format_vstring {
   my $vs = shift;
   return $vs unless $vs; # take care of ''
+  #no warnings 'utf8'; # every 16-bit value is ok
   $vs =~ s/(.)/ord($1)."."/eg;
   chop $vs;
   return $vs
@@ -158,7 +167,7 @@ each one must be satisfied (that is, an I<and>).
 Simple predicates takes one of three forms:
 
   '0.1.2'       - exact match 
-  '>= 3.14.15'  
+  '>= 3.14.15'  - (relational operator) (v-string)
   '5.6 .. 10.8' - meaning '>= 5.6, <= 10.8'
 
 A grammar for predicates in L<Parse::RecDescent>-like syntax
@@ -195,7 +204,7 @@ sub vstring_satisfy {
           _vstring_cmp($vs, '<=', $3); # !!!
       return 0;
     }
-    warn "bad predicate $_"
+    carp "bad predicate $_"
       and return undef;
   }
   return 1;
@@ -229,14 +238,38 @@ sub _vstring_cmp {
   return &{$cmp{$op}}($v1, $v2);
 }
 
+=item B<vstring_cmp>
+
+  $ans = vstring_cmp($vs1, $op, $vs2)
+
+  $eq = vstring_cmp('0.1.02', '==', '0.01.2'); # ok
+  $le = vstring_cmp('1.2.3', '>=', '3.2.1'); # not ok
+
+Makes a comparison between two v-strings. The supported operators
+are '==', '!=', '<=', '>=', '<', and '>'.
+
+=cut
+
+sub vstring_cmp {
+  my $v1 = parse_vstring shift;
+  return undef unless $v1;
+  my $op = shift;
+  unless (exists $cmp{$op}) {
+      carp "vstring_cmp: unknown op '$op'";
+      return undef
+  }
+  my $v2 = parse_vstring shift;
+  return undef unless $v2;
+  return &{$cmp{$op}}($v1, $v2);
+}
 
 =back
 
 
 =head2 EXPORT
 
-None by default. C<parse_vstring>, C<format_vstring>
-and C<vstring_satisfy> can be exported on demand.
+None by default. C<parse_vstring>, C<format_vstring>,
+C<vstring_cmp>, and C<vstring_satisfy> can be exported on demand.
 
 =begin comment
 
@@ -251,11 +284,9 @@ string contains '_', it is meant to be a developer's version).
 Remember also the syntactical confusion that 'v65' is not
 a v-string in a the right hand of C<< '=>' >>.
 
-Expose C<vstring_cmp> with signature C<$vs1, $op, $vs2>.
-Needs better argument checking than the one I got now.
+Include a link to the JSAN library when it is released.
 
-Include a link to the JSAN library when it is 
-released.
+Document the behavior on error of the functions of the module.
 
 =end comment
 
@@ -266,11 +297,66 @@ released.
 
 L<perldata/"Version Strings">
 
+L<version> by John Peacock. That module is older and more famous.
+The main differences are:
+
+=over 4
+
+=item *
+
+C<version> is OO, this module is a bunch of functions
+
+=item *
+
+C<version> does not represents version as Unicode strings
+as we do (well, I think so after a quick glance of the code)
+
+=item *
+
+C<version> is much more tolerant with numeric versions.
+This module is not concerned with backward compatibility.
+Use it versions as strings from the beginning, 
+stay out of trouble with numeric versions.
+
+=item *
+
+C<version> is also more tolerant with non-numeric versions.
+On the contrary, C<Data::VString> is very strict about
+syntax.
+
+=item *
+
+we don't dare to redefine C<UNIVERSAL::VERSION>.
+
+=item *
+
+v-strings are treated as data here and no attempt
+to force semantics as Perl module version was made.
+Indeed I started coding this module for
+handling JSAN distributions (which are data from
+the point of view of the Perl program).
+
+=back
+
 This module is a companion for the JSAN module
 C<Data.VString>. This one implements the Perl side
 while the other will implement the JavaScript side.
 
 =head1 BUGS
+
+There must be some. Because all trivial software
+must have at least one bug. This is the actual
+list of known bugs.
+
+=over 4
+
+=item *
+
+There is a bug with certain version parts which are
+illegal Unicode characters. So the full range 
+(0..65535) is not actually usable.
+
+=back
 
 Please report bugs via CPAN RT L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Data-VString>.
 
