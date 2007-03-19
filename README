@@ -1,4 +1,4 @@
-Data-VString version 0.0.3
+Data-VString version 0.0.4
 ==========================
 
 Perl extension to handle v-strings (often used as version strings)
@@ -32,7 +32,7 @@ TO DO
 
 COPYRIGHT AND LICENCE
 
-Copyright (C) 2005 by Adriano R. Ferreira
+Copyright (C) 2005, 2007 by Adriano R. Ferreira
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

@@ -1,17 +1,17 @@
----
-# http://module-build.sourceforge.net/META-spec.html
-name:         Data-VString
-version:      0.000_003
-version_from: lib/Data/VString.pm
+--- #YAML:1.0
+name:                Data-VString
+version:             0.000004
+abstract:            Perl extension to handle v-strings (often used as version strings)
+license:             perl
+generated_by:        ExtUtils::MakeMaker version 6.32
+distribution_type:   module
+requires:     
+    Carp:                          0
+    Test::More:                    0
+meta-spec:
+    url:     http://module-build.sourceforge.net/META-spec-v1.2.html
+    version: 1.2
 author:
-  - Adriano Ferreira <ferreira@cpan.org>
-license: perl
-requires:
-  Test::More: 0
-  Carp:       0
+    - A. R. Ferreira <ferreira@cpan.org>
 recommends:
-  Test::Pod:  1.18
-installdirs:  site
-
-distribution_type: module
-generated_by: ExtUtils::MakeMaker version 6.17
+    Test::Pod:  1.18

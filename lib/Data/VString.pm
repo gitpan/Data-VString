@@ -14,7 +14,7 @@ our @EXPORT_OK = qw(
   vstring_cmp
 );
 
-our $VERSION = '0.000_003'; # '0.0.3'
+our $VERSION = '0.000004'; # '0.0.4'
 
 use Carp qw(carp);
 
@@ -45,11 +45,12 @@ C<'0.1'> is the same as C<'0.01'>. The ordering of
 such tuples is usually defined by comparing each
 part. And that makes 
 
-  '0.1' > '0.2' 
-  '0.2.1' < '0.1.3'
+  '0.1' < '0.2' 
+  '0.2.1' > '0.1.3'
   '0.11.10' > '0.10.10.10' 
+  '10.0.0' > '9.9.9' # notice that '10.0.0' gt '9.9.9' is false
 
-and also C<'0.1'> > C<'0.1.0'> (because the first one is shorter). 
+and also C<'0.1'> < C<'0.1.0'> (because the first one is shorter). 
 There is also no need to define how many integers to accept
 in the tuple, with C<'0.0.1.2.34.4.580.20'> being
 a nice version.
@@ -366,7 +367,7 @@ Adriano R. Ferreira, E<lt>ferreira@cpan.orgE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2005 by Adriano R. Ferreira
+Copyright (C) 2005, 2007 by Adriano R. Ferreira
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
